@@ -20,6 +20,8 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,17 +45,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
@@ -70,6 +77,10 @@ public class MainActivity extends AppCompatActivity implements
     private static final int REQUEST_CAMERA_PERMISSION = 1;
 
     private static final String FRAGMENT_DIALOG = "dialog";
+
+    private static final MediaType MEDIA_TYPE_PNG = MediaType.parse("image/png");
+    private static final MediaType MEDIA_TYPE_JPEG = MediaType.parse("image/jpeg");
+
 
     private static final int[] FLASH_OPTIONS = {
             CameraView.FLASH_AUTO,
@@ -258,18 +269,30 @@ public class MainActivity extends AppCompatActivity implements
             Toast.makeText(cameraView.getContext(), R.string.picture_taken, Toast.LENGTH_SHORT)
                     .show();
 
-            requestCarbonFootprint();
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            final Bitmap bmpScaled = Bitmap.createScaledBitmap(bmp, (int) (bmp.getWidth() * 0.25f),
+                                                                (int) (bmp.getHeight() * 0.25f), true);
+            //bmp.compress(Bitmap.CompressFormat.JPEG, 70, bos);
+            //bmp.compress()
 
             getBackgroundHandler().post(new Runnable() {
                 @Override
                 public void run() {
                     File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
                             "picture.jpg");
+
                     OutputStream os = null;
                     try {
+
                         os = new FileOutputStream(file);
-                        os.write(data);
+                        //os.write(data);
+                        bmpScaled.compress(Bitmap.CompressFormat.JPEG, 70, os);
                         os.close();
+                        requestCarbonFootprint(file, "picture.jpg");
+
+
                     } catch (IOException e) {
                         Log.w(TAG, "Cannot write to " + file, e);
                     } finally {
@@ -338,7 +361,7 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
-    private void requestCarbonFootprint() {
+    private void requestTest() {
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -351,7 +374,58 @@ public class MainActivity extends AppCompatActivity implements
                     Response response = okHttpClient.newCall(request).execute();
                     if (response.isSuccessful()) {
                         return response.body().string();
+
                     } else {
+                        return "Not Success - code : " + response.code();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return "Error - " + e.getMessage();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String string) {
+                super.onPostExecute(string);
+                Log.d("ACTAPP", string);
+            }
+        }.execute();
+    }
+
+    private void requestCarbonFootprint(final File file, final String fileName) {
+        Log.d("ACTAPP", "send file with path " + file.getAbsolutePath());
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                OkHttpClient okHttpClient = new OkHttpClient();
+
+                RequestBody requestBody = new MultipartBody.Builder()
+                        .setType(MultipartBody.FORM)
+                        .addFormDataPart("title", "Square Logo")
+                        .addFormDataPart("image", fileName,
+                                RequestBody.create(MEDIA_TYPE_JPEG, file))
+                        .build();
+
+                Request request = new Request.Builder()
+                        // .header("Authorization", "Client-ID " + IMGUR_CLIENT_ID)
+                        .url("http://35.185.228.62:8080/api/scan")
+                        .post(requestBody)
+                        .build();
+
+                // Response response = client.newCall(request).execute();
+                // if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+                // Request.Builder builder = new Request.Builder();
+                // Request request = builder.url("http://date.jsontest.com/").build();
+
+                try {
+                    Response response = okHttpClient.newCall(request).execute();
+                    if (response.isSuccessful()) {
+
+                        return response.body().string();
+
+                    } else {
+                        Log.d("ACTAPP", "response not successful");
                         return "Not Success - code : " + response.code();
                     }
                 } catch (IOException e) {
