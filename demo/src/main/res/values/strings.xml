@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
     Copyright (C) 2016 The Android Open Source Project
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -22,4 +21,24 @@
     <string name="flash_auto">Flash auto</string>
     <string name="flash_off">Flash off</string>
     <string name="flash_on">Flash on</string>
+    <string name="terms_and_conditions">Ace. Terms and Conditions
+
+These terms and conditions create a contract between you and Ace.
+Please read the Agreement carefully. To confirm your understanding and acceptance of the Agreement, click “Agree.”
+
+PLEASE READ THESE TERMS OF USE CAREFULLY BEFORE USING THIS PLATFORM.
+ 
+By accessing or using this website, mobile application or other Ace. product or service on any computer, mobile phone, tablet, console or other device, you signify that you have read, understand and agree to be bound by these Terms of Use and any other applicable law, whether or not you are a registered member of Ace.. Ace. may change these Terms of Use at any time without notice, effective upon its posting to the Platform. Your continued use of the Platform shall be considered your acceptance to the revised Terms of Use. If you do not agree to these Terms of Use, please do not use this Platform.
+
+AGREEMENT
+
+By agreeing on these terms and conditions, you will be involved in signing of the petition for the case for Carbon Dividends. Therefore, you agree on these terms:
+
+
+IV: SIGNIFICANT REGULATORY ROLLBACK
+The final pillar is the elimination of regulations that are no longer necessary upon the enactment of a rising carbon tax whose longevity is secured by the popularity of dividends. Much of the EPA’s regulatory authority over carbon dioxide emissions would be phased out, including an outright repeal of the Clean Power Plan. Robust carbon taxes would also make possible an end to federal and state tort liability for emitters. To build and sustain a bipartisan consensus for a regulatory rollback of this magnitude, the initial carbon tax rate should be set to exceed the emissions reductions of current regulations.
+
+    </string>
+    <string name="facebook_app_id">1957626341154685</string>
+    <string name="fb_login_protocol_scheme">fb1957626341154685</string>
 </resources>
