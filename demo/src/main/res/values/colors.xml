@@ -18,4 +18,5 @@
     <color name="primaryText">#212121</color>
     <color name="secondaryText">#727272</color>
     <color name="black">#000000</color>
+    <color name="transparent_black">#CC000000</color>
 </resources>

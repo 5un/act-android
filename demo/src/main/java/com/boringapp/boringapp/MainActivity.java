@@ -37,6 +37,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -51,13 +52,19 @@ import android.view.View;
 import android.view.animation.AnticipateInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.boringapp.boringapp.data.RecognitionResult;
 import com.bumptech.glide.Glide;
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
 import com.ogaclejapan.arclayout.Arc;
 import com.ogaclejapan.arclayout.ArcLayout;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -68,6 +75,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import it.sephiroth.android.library.viewrevealanimator.ViewRevealAnimator;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -119,8 +127,17 @@ public class MainActivity extends AppCompatActivity implements
     private MainPagerAdapter mPagerAdapter;
     private ImageButton mBtnSettings;
     private ImageButton mBtnRedeem;
+    private ImageButton mBtnVote;
+    private ImageButton mBtnScan;
+    private ImageButton mBtnHistory;
+    private ImageButton mBtnFriends;
     private ArcLayout mMenuLayout;
     private ImageButton mBtnTakePhoto;
+    private Fragment mCarbonScoreFragment;
+    private ViewRevealAnimator mViewRevealAnimator;
+    private RelativeLayout mLayoutCarbonScoreOverlay;
+    private TextView mTxtProductName;
+    private TextView mTxtProductScore;
 
 
     private Handler mBackgroundHandler;
@@ -131,14 +148,17 @@ public class MainActivity extends AppCompatActivity implements
             switch (v.getId()) {
                 case R.id.take_picture:
 
-//                    if (mCameraView != null) {
-//                        mCameraView.takePicture();
-//                    }
                     if(mMenuLayout.getVisibility() == View.INVISIBLE){
                         showMenu();
                     } else {
                         hideMenu();
                     }
+                    break;
+                case R.id.btn_scan:
+                     if (mCameraView != null) {
+                        mCameraView.takePicture();
+                     }
+                     hideMenu();
                     break;
             }
         }
@@ -203,8 +223,30 @@ public class MainActivity extends AppCompatActivity implements
         mBtnTakePhoto = (ImageButton) findViewById(R.id.take_picture);
         mBtnTakePhoto.setOnClickListener(mOnClickListener);
 
+        mBtnVote = (ImageButton) findViewById(R.id.btn_vote);
+        mBtnVote.setOnClickListener(mOnClickListener);
+
+        mBtnScan = (ImageButton) findViewById(R.id.btn_scan);
+        mBtnScan.setOnClickListener(mOnClickListener);
+
+        mBtnHistory = (ImageButton) findViewById(R.id.btn_history);
+        mBtnHistory.setOnClickListener(mOnClickListener);
+
+        mBtnFriends = (ImageButton) findViewById(R.id.btn_friends);
+        mBtnFriends.setOnClickListener(mOnClickListener);
+
         mMenuLayout = (ArcLayout) findViewById(R.id.arc_layout);
         mMenuLayout.setVisibility(View.INVISIBLE);
+
+        mViewRevealAnimator = (ViewRevealAnimator) findViewById(R.id.animator);
+        mViewRevealAnimator.setVisibility(View.GONE);
+
+        mLayoutCarbonScoreOverlay = (RelativeLayout) findViewById(R.id.layout_carbon_score_overlay);
+        mLayoutCarbonScoreOverlay.setVisibility(View.GONE);
+
+        mTxtProductName = (TextView) findViewById(R.id.txt_product_name);
+        mTxtProductScore = (TextView) findViewById(R.id.txt_product_score);
+
 
         // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // setSupportActionBar(toolbar);
@@ -212,6 +254,13 @@ public class MainActivity extends AppCompatActivity implements
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
         }
+
+        mLayoutCarbonScoreOverlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mLayoutCarbonScoreOverlay.setVisibility(View.GONE);
+            }
+        });
     }
 
     @Override
@@ -469,9 +518,9 @@ public class MainActivity extends AppCompatActivity implements
 
     private void requestCarbonFootprint(final File file, final String fileName) {
         Log.d("ACTAPP", "send file with path " + file.getAbsolutePath());
-        new AsyncTask<Void, Void, String>() {
+        new AsyncTask<Void, Void, RecognitionResult>() {
             @Override
-            protected String doInBackground(Void... voids) {
+            protected RecognitionResult doInBackground(Void... voids) {
                 OkHttpClient okHttpClient = new OkHttpClient();
 
                 RequestBody requestBody = new MultipartBody.Builder()
@@ -487,32 +536,40 @@ public class MainActivity extends AppCompatActivity implements
                         .post(requestBody)
                         .build();
 
-                // Response response = client.newCall(request).execute();
-                // if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-                // Request.Builder builder = new Request.Builder();
-                // Request request = builder.url("http://date.jsontest.com/").build();
-
                 try {
                     Response response = okHttpClient.newCall(request).execute();
                     if (response.isSuccessful()) {
-
-                        return response.body().string();
+                        JSONObject jobject = new JSONObject(response.body().string());
+                        RecognitionResult result = new RecognitionResult(jobject);
+                        return result;
 
                     } else {
                         Log.d("ACTAPP", "response not successful");
-                        return "Not Success - code : " + response.code();
+                        return null;
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return "Error - " + e.getMessage();
+                    return null;
+                } catch(JSONException e) {
+                    e.printStackTrace();
+                    return null;
                 }
             }
 
             @Override
-            protected void onPostExecute(String string) {
-                super.onPostExecute(string);
-                Log.d("ACTAPP", string);
+            protected void onPostExecute(RecognitionResult result) {
+                if(result != null) {
+                    mLayoutCarbonScoreOverlay.setVisibility(View.VISIBLE);
+                    mTxtProductName.setText("" + result.description + ", " + result.brand);
+                    mTxtProductScore.setText("" + result.carbonScore);
+                } else {
+                    Toast.makeText(MainActivity.this,
+                            "Cannot detect product, please try again.",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+
+
             }
         }.execute();
     }

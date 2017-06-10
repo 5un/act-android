@@ -85,7 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:arc_origin="bottom"
-        app:arc_color="#22000000"
+        app:arc_color="#cc000000"
         app:arc_radius="180dp"
         app:arc_axisRadius="100dp"
         app:arc_freeAngle="false"
@@ -93,6 +93,7 @@
         >
 
         <ImageButton
+            android:id="@+id/btn_vote"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:gravity="center"
@@ -103,6 +104,7 @@
             />
 
         <ImageButton
+            android:id="@+id/btn_scan"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:gravity="center"
@@ -113,6 +115,7 @@
             />
 
         <ImageButton
+            android:id="@+id/btn_history"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:gravity="center"
@@ -123,6 +126,7 @@
             />
 
         <ImageButton
+            android:id="@+id/btn_friends"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:gravity="center"
@@ -146,8 +150,75 @@
         android:src="@drawable/logo_act_white"
         app:srcCompat="@drawable/logo_act_white"/>
 
+    <it.sephiroth.android.library.viewrevealanimator.ViewRevealAnimator
+        android:layout_centerHorizontal="true"
+        android:id="@+id/animator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animationDuration="@android:integer/config_longAnimTime"
+        app:vra_hideBeforeReveal="true"
+        android:measureAllChildren="true"
+        android:animateFirstView="true"
+        android:outAnimation="@anim/out_animation"
+        android:inAnimation="@anim/in_animation"
+        android:interpolator="@android:interpolator/accelerate_decelerate">
 
+    </it.sephiroth.android.library.viewrevealanimator.ViewRevealAnimator>
 
+    <RelativeLayout
+        android:id="@+id/layout_carbon_score_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/transparent_black">
+
+        <TextView
+            android:id="@+id/txt_product_score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView11"
+            android:layout_marginTop="66dp"
+            android:gravity="center_horizontal"
+            android:text="20"
+            android:textColor="@android:color/white"
+            android:textSize="70sp"/>
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="Product Detected"
+            android:textColor="@android:color/white"
+            android:textSize="32sp"/>
+
+        <TextView
+            android:id="@+id/txt_product_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView11"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="53dp"
+            android:text="TextView"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_product_score"
+            android:layout_centerHorizontal="true"
+            android:text="Carbon Score"
+            android:textColor="@android:color/white"/>
+
+    </RelativeLayout>
 
 
 </RelativeLayout>
