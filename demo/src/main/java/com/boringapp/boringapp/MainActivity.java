@@ -23,6 +23,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -75,6 +76,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import it.sephiroth.android.library.viewrevealanimator.ViewRevealAnimator;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -125,12 +128,25 @@ public class MainActivity extends AppCompatActivity implements
     private CameraView mCameraView;
     private ViewPager mPager;
     private MainPagerAdapter mPagerAdapter;
-    private ImageButton mBtnSettings;
-    private ImageButton mBtnRedeem;
-    private ImageButton mBtnVote;
-    private ImageButton mBtnScan;
-    private ImageButton mBtnHistory;
-    private ImageButton mBtnFriends;
+
+    @BindView(R.id.btn_settings)
+    ImageButton mBtnSettings;
+
+    @BindView(R.id.btn_redeem)
+    ImageButton mBtnRedeem;
+
+    @BindView(R.id.btn_vote)
+    ImageButton mBtnVote;
+
+    @BindView(R.id.btn_scan)
+    ImageButton mBtnScan;
+
+    @BindView(R.id.btn_history)
+    ImageButton mBtnHistory;
+
+    @BindView(R.id.btn_friends)
+    ImageButton mBtnFriends;
+
     private ArcLayout mMenuLayout;
     private ImageButton mBtnTakePhoto;
     private Fragment mCarbonScoreFragment;
@@ -155,10 +171,21 @@ public class MainActivity extends AppCompatActivity implements
                     }
                     break;
                 case R.id.btn_scan:
-                     if (mCameraView != null) {
+                    if(mPager.getCurrentItem() != 1) {
+                        mPager.setCurrentItem(1);
+                    }
+                    if (mCameraView != null) {
                         mCameraView.takePicture();
                      }
                      hideMenu();
+                    break;
+                case R.id.btn_redeem:
+                    Intent intent = new Intent(MainActivity.this, RewardsMenuActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.btn_friends:
+                    mPager.setCurrentItem(2);
+                    hideMenu();
                     break;
             }
         }
@@ -168,6 +195,8 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
         mCameraView = (CameraView) findViewById(R.id.camera);
         if (mCameraView != null) {
             mCameraView.addCallback(mCallback);
@@ -223,17 +252,11 @@ public class MainActivity extends AppCompatActivity implements
         mBtnTakePhoto = (ImageButton) findViewById(R.id.take_picture);
         mBtnTakePhoto.setOnClickListener(mOnClickListener);
 
-        mBtnVote = (ImageButton) findViewById(R.id.btn_vote);
         mBtnVote.setOnClickListener(mOnClickListener);
-
-        mBtnScan = (ImageButton) findViewById(R.id.btn_scan);
         mBtnScan.setOnClickListener(mOnClickListener);
-
-        mBtnHistory = (ImageButton) findViewById(R.id.btn_history);
         mBtnHistory.setOnClickListener(mOnClickListener);
-
-        mBtnFriends = (ImageButton) findViewById(R.id.btn_friends);
         mBtnFriends.setOnClickListener(mOnClickListener);
+        mBtnRedeem.setOnClickListener(mOnClickListener);
 
         mMenuLayout = (ArcLayout) findViewById(R.id.arc_layout);
         mMenuLayout.setVisibility(View.INVISIBLE);

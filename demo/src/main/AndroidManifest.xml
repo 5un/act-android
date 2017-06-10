@@ -53,6 +53,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".TermsAndConditionsActivity"></activity>
+        <activity android:name=".RewardsMenuActivity"></activity>
+        <activity android:name=".RewardsListActivity"></activity>
     </application>
 
 </manifest>

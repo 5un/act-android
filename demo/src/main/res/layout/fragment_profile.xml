@@ -22,9 +22,18 @@
                 android:background="@android:color/transparent">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageViewTier"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@drawable/tier_gold"/>
+
+    <com.boringapp.boringapp.views.RoundCornerImageView
+        android:id="@+id/imageViewProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="84dp"
@@ -34,9 +43,9 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
+        android:layout_below="@+id/imageViewTier"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp"
+        android:layout_marginTop="20dp"
         android:text="John Doe"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textColor="@android:color/white"/>
@@ -61,8 +70,12 @@
         android:layout_centerVertical="true"
         android:gravity="center_horizontal"
         android:text="Your Points: 10,000"
+        android:padding="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@android:color/white"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/white"/>
+        android:textColor="@android:color/black"/>
 
     <TextView
         android:id="@+id/textView6"
@@ -86,12 +99,5 @@
         android:text="500 THB"
         android:textColor="@android:color/white"/>
 
-    <ImageView
-        android:id="@+id/imageViewTier"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        app:srcCompat="@drawable/tier_gold"/>
+
 </RelativeLayout>
