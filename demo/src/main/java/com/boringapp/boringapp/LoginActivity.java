@@ -23,14 +23,11 @@ import android.util.Log;
 
 import butterknife.ButterKnife;
 
-<<<<<<< Updated upstream
-=======
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
->>>>>>> Stashed changes
 
 /**
  * Created by Sun on 6/10/2017 AD.
