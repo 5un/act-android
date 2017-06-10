@@ -20,6 +20,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -257,17 +258,7 @@ public class MainActivity extends AppCompatActivity implements
             Toast.makeText(cameraView.getContext(), R.string.picture_taken, Toast.LENGTH_SHORT)
                     .show();
 
-//            OkHttpClient client = new OkHttpClient();
-//            Request request = new Request.Builder()
-//                                .url("https://api.spotify.com/v1")
-//                                .build();
-//
-//            try {
-//                Response response = client.newCall(request).execute();
-//                Log.d("TESTAPP", "Response: " + response.body().string());
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            requestCarbonFootprint();
 
             getBackgroundHandler().post(new Runnable() {
                 @Override
@@ -345,6 +336,36 @@ public class MainActivity extends AppCompatActivity implements
                     .create();
         }
 
+    }
+
+    private void requestCarbonFootprint() {
+        new AsyncTask<Void, Void, String>() {
+            @Override
+            protected String doInBackground(Void... voids) {
+                OkHttpClient okHttpClient = new OkHttpClient();
+
+                Request.Builder builder = new Request.Builder();
+                Request request = builder.url("http://date.jsontest.com/").build();
+
+                try {
+                    Response response = okHttpClient.newCall(request).execute();
+                    if (response.isSuccessful()) {
+                        return response.body().string();
+                    } else {
+                        return "Not Success - code : " + response.code();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return "Error - " + e.getMessage();
+                }
+            }
+
+            @Override
+            protected void onPostExecute(String string) {
+                super.onPostExecute(string);
+                Log.d("ACTAPP", string);
+            }
+        }.execute();
     }
 
 }
