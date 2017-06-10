@@ -17,6 +17,10 @@
 package com.boringapp.boringapp;
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -35,6 +39,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -43,17 +48,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.OvershootInterpolator;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
+import com.ogaclejapan.arclayout.Arc;
+import com.ogaclejapan.arclayout.ArcLayout;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import okhttp3.MediaType;
@@ -103,6 +115,13 @@ public class MainActivity extends AppCompatActivity implements
     private int mCurrentFlash;
 
     private CameraView mCameraView;
+    private ViewPager mPager;
+    private MainPagerAdapter mPagerAdapter;
+    private ImageButton mBtnSettings;
+    private ImageButton mBtnRedeem;
+    private ArcLayout mMenuLayout;
+    private ImageButton mBtnTakePhoto;
+
 
     private Handler mBackgroundHandler;
 
@@ -111,8 +130,14 @@ public class MainActivity extends AppCompatActivity implements
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.take_picture:
-                    if (mCameraView != null) {
-                        mCameraView.takePicture();
+
+//                    if (mCameraView != null) {
+//                        mCameraView.takePicture();
+//                    }
+                    if(mMenuLayout.getVisibility() == View.INVISIBLE){
+                        showMenu();
+                    } else {
+                        hideMenu();
                     }
                     break;
             }
@@ -127,12 +152,62 @@ public class MainActivity extends AppCompatActivity implements
         if (mCameraView != null) {
             mCameraView.addCallback(mCallback);
         }
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.take_picture);
-        if (fab != null) {
-            fab.setOnClickListener(mOnClickListener);
-        }
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+
+        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                    int positionOffsetPixels) {
+                Log.d("ACTAPP", "page:" + mPager.getCurrentItem() +  " position " + position + " positionOffset " + positionOffset + " positionOffsetPixels " + positionOffsetPixels);
+                // mPager.getCurrentItem();
+                if(position == 0){
+                    //TODO the more value, the more transparency
+                    mPager.setBackgroundColor(Utils.getColorWithAlpha(getResources().getColor(R.color.black), 1.0f - positionOffset));
+
+                }else if(position == 1){
+                    // TODO the less value, the more transparency
+                    mPager.setBackgroundColor(Utils.getColorWithAlpha(getResources().getColor(R.color.black), positionOffset));
+                }else {
+                    // always black
+                    mPager.setBackgroundColor(Utils.getColorWithAlpha(getResources().getColor(R.color.black), 1.0f));
+                }
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+//        mPager.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+//            @Override
+//            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+//
+//            }
+//        });
+
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.take_picture);
+//        if (fab != null) {
+//            fab.setOnClickListener(mOnClickListener);
+//        }
+
+        mBtnTakePhoto = (ImageButton) findViewById(R.id.take_picture);
+        mBtnTakePhoto.setOnClickListener(mOnClickListener);
+
+        mMenuLayout = (ArcLayout) findViewById(R.id.arc_layout);
+        mMenuLayout.setVisibility(View.INVISIBLE);
+
+        // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        // setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayShowTitleEnabled(false);
@@ -440,6 +515,90 @@ public class MainActivity extends AppCompatActivity implements
                 Log.d("ACTAPP", string);
             }
         }.execute();
+    }
+
+
+    @SuppressWarnings("NewApi")
+    private void showMenu() {
+        mMenuLayout.setVisibility(View.VISIBLE);
+
+        List<Animator> animList = new ArrayList<>();
+
+        for (int i = 0, len = mMenuLayout.getChildCount(); i < len; i++) {
+            animList.add(createShowItemAnimator(mMenuLayout.getChildAt(i)));
+        }
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.setDuration(400);
+        animSet.setInterpolator(new OvershootInterpolator());
+        animSet.playTogether(animList);
+        animSet.start();
+    }
+
+    @SuppressWarnings("NewApi")
+    private void hideMenu() {
+
+        List<Animator> animList = new ArrayList<>();
+
+        for (int i = mMenuLayout.getChildCount() - 1; i >= 0; i--) {
+            animList.add(createHideItemAnimator(mMenuLayout.getChildAt(i)));
+        }
+
+        AnimatorSet animSet = new AnimatorSet();
+        animSet.setDuration(400);
+        animSet.setInterpolator(new AnticipateInterpolator());
+        animSet.playTogether(animList);
+        animSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mMenuLayout.setVisibility(View.INVISIBLE);
+            }
+        });
+        animSet.start();
+
+    }
+
+    private Animator createShowItemAnimator(View item) {
+
+        float dx = mBtnTakePhoto.getX() - item.getX();
+        float dy = mBtnTakePhoto.getY() - item.getY();
+
+        item.setRotation(0f);
+        item.setTranslationX(dx);
+        item.setTranslationY(dy);
+
+        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
+                item,
+                AnimatorUtils.rotation(0f, 360f),
+                AnimatorUtils.translationX(dx, 0f),
+                AnimatorUtils.translationY(dy, 0f)
+        );
+
+        return anim;
+    }
+
+    private Animator createHideItemAnimator(final View item) {
+        float dx = mBtnTakePhoto.getX() - item.getX();
+        float dy = mBtnTakePhoto.getY() - item.getY();
+
+        Animator anim = ObjectAnimator.ofPropertyValuesHolder(
+                item,
+                AnimatorUtils.rotation(360f, 0f),
+                AnimatorUtils.translationX(0f, dx),
+                AnimatorUtils.translationY(0f, dy)
+        );
+
+        anim.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                item.setTranslationX(0f);
+                item.setTranslationY(0f);
+            }
+        });
+
+        return anim;
     }
 
 }
