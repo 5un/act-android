@@ -17,9 +17,12 @@
 package com.boringapp.boringapp;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.VideoView;
 
 import butterknife.ButterKnife;
 
@@ -68,6 +71,18 @@ public class LoginActivity extends AppCompatActivity {
             public void onError(FacebookException exception) {
                 // App code
                 Log.i("Facebook Login", "Error");
+            }
+        });
+
+        VideoView videoview = (VideoView) findViewById(R.id.videoView);
+        Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.video);
+        videoview.setVideoURI(uri);
+        videoview.start();
+
+        videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setLooping(true);
             }
         });
     }
