@@ -26,6 +26,7 @@ import android.widget.VideoView;
 
 import butterknife.ButterKnife;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -47,6 +48,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null)
+        {
+            Intent intent = new Intent(LoginActivity.this, TermsAndConditionsActivity.class);
+            startActivity(intent);
+        }
 
         callbackManager = CallbackManager.Factory.create();
 
