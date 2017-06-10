@@ -41,4 +41,5 @@ The final pillar is the elimination of regulations that are no longer necessary 
     </string>
     <string name="facebook_app_id">1957626341154685</string>
     <string name="fb_login_protocol_scheme">fb1957626341154685</string>
+    <string name="preference_file">preference</string>
 </resources>
