@@ -182,6 +182,10 @@ public class MainActivity extends AppCompatActivity implements
                     mPager.setCurrentItem(2);
                     hideMenu();
                     break;
+                case R.id.btn_vote:
+                    Intent intent2 = new Intent(MainActivity.this, PollingTopicsActivity.class);
+                    startActivity(intent2);
+                    break;
             }
         }
     };
