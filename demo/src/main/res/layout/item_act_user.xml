@@ -39,9 +39,8 @@
             android:layout_height="20sp"
             android:layout_alignBottom="@+id/imageView"
             android:layout_alignParentLeft="true"
-            android:layout_margin="10dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/icon_positive"/>
+            app:srcCompat="@drawable/tier_gold"/>
     </RelativeLayout>
 
     <LinearLayout

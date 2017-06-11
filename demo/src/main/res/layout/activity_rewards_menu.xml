@@ -42,45 +42,49 @@
         <ImageButton
             android:id="@+id/btnRedeemFood"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:padding="20dp"
-            app:srcCompat="@drawable/icon_food"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_food"/>
 
         <ImageButton
             android:id="@+id/btnRedeemShopping"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:padding="20dp"
-            app:srcCompat="@drawable/icon_shop"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_shop"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="20dp">
 
         <ImageButton
             android:id="@+id/btnRedeemFlight"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:padding="20dp"
-            app:srcCompat="@drawable/icon_airport"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_airport"/>
 
         <ImageButton
             android:id="@+id/btnRedeemOther"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@android:color/transparent"
             android:padding="20dp"
-            app:srcCompat="@drawable/icon_more"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/icon_more"/>
     </LinearLayout>
 
 </LinearLayout>

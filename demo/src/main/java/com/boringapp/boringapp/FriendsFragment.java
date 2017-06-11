@@ -51,6 +51,7 @@ public class FriendsFragment extends Fragment {
     ActUserAdapter mAdapter;
 
     private ArrayList<ActUser> leaderboard;
+    private ArrayList<ActUser> activeUsers;
 
     public static FriendsFragment newInstance() {
         FriendsFragment f = new FriendsFragment();
@@ -67,25 +68,63 @@ public class FriendsFragment extends Fragment {
         //TODO Mock Friends
         leaderboard = new ArrayList<ActUser>();
         leaderboard.add(new ActUser(
-                "John Doe 1",
+                "John Doe",
                 500000,
                 "https://randomuser.me/api/portraits/men/1.jpg"));
         leaderboard.add(new ActUser(
-                "John Doe 2",
+                "Mary Jane",
                 498000,
-                "https://randomuser.me/api/portraits/men/2.jpg"));
+                "https://randomuser.me/api/portraits/women/2.jpg"));
         leaderboard.add(new ActUser(
-                "John Doe 3",
+                "Clark Kent",
                 375000,
                 "https://randomuser.me/api/portraits/men/3.jpg"));
         leaderboard.add(new ActUser(
-                "John Doe 4",
+                "Lois Lane",
                 282000,
-                "https://randomuser.me/api/portraits/men/4.jpg"));
+                "https://randomuser.me/api/portraits/women/4.jpg"));
         leaderboard.add(new ActUser(
-                "John Doe 5",
+                "Peter Parker",
                 100023,
                 "https://randomuser.me/api/portraits/men/5.jpg"));
+        leaderboard.add(new ActUser(
+                "Logan",
+                100023,
+                "https://randomuser.me/api/portraits/men/6.jpg"));
+        leaderboard.add(new ActUser(
+                "Natasha Romanov",
+                100023,
+                "https://randomuser.me/api/portraits/women/7.jpg"));
+
+        activeUsers = new ArrayList<ActUser>();
+        activeUsers.add(new ActUser(
+                "James Smith",
+                345,
+                "https://randomuser.me/api/portraits/men/8.jpg"));
+        activeUsers.add(new ActUser(
+                "Jane Pickering",
+                2523,
+                "https://randomuser.me/api/portraits/women/9.jpg"));
+        activeUsers.add(new ActUser(
+                "Dan Kumamoto",
+                343,
+                "https://randomuser.me/api/portraits/men/10.jpg"));
+        activeUsers.add(new ActUser(
+                "Naomi Ray",
+                35983,
+                "https://randomuser.me/api/portraits/women/11.jpg"));
+        activeUsers.add(new ActUser(
+                "Shaun Bonham",
+                244,
+                "https://randomuser.me/api/portraits/men/12.jpg"));
+        activeUsers.add(new ActUser(
+                "Andy Lee",
+                7688,
+                "https://randomuser.me/api/portraits/men/13.jpg"));
+        activeUsers.add(new ActUser(
+                "Zoe Zimmerman",
+                1123,
+                "https://randomuser.me/api/portraits/women/14.jpg"));
 
     }
 
@@ -98,6 +137,23 @@ public class FriendsFragment extends Fragment {
 
         mAdapter = new ActUserAdapter(getContext(), leaderboard);
         listView.setAdapter(mAdapter);
+
+        btnFriendsTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAdapter.clear();
+                mAdapter.addAll(leaderboard);
+
+            }
+        });
+
+        btnFriendsActive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAdapter.clear();
+                mAdapter.addAll(activeUsers);
+            }
+        });
 
         return view;
     }
