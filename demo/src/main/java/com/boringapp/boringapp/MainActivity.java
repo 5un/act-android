@@ -257,6 +257,20 @@ public class MainActivity extends AppCompatActivity implements
         mBtnFriends.setOnClickListener(mOnClickListener);
         mBtnRedeem.setOnClickListener(mOnClickListener);
 
+        mBtnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mPager.getCurrentItem() < 3)
+                {
+                    mPager.setCurrentItem(3);
+                }
+                else
+                {
+                    mPager.setCurrentItem(0);
+                }
+            }
+        });
+
         mMenuLayout = (ArcLayout) findViewById(R.id.arc_layout);
         mMenuLayout.setVisibility(View.INVISIBLE);
 

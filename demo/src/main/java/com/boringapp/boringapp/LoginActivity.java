@@ -30,6 +30,7 @@ import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
@@ -62,6 +63,8 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setReadPermissions("email", "public_profile", "user_friends");
 
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            private ProfileTracker mProfileTracker;
+
             @Override
             public void onSuccess(LoginResult loginResult) {
                 // App code

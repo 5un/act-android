@@ -16,18 +16,22 @@
 
 package com.boringapp.boringapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.net.Uri;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 
 /**
  * Created by Sun on 6/10/2017 AD.
@@ -37,7 +41,12 @@ public class ProfileFragment extends Fragment {
 
     @BindView(R.id.imageViewProfile)
     ImageView imgViewProfile;
-    Profile profile;
+
+    @BindView(R.id.textView3)
+    TextView nameTextView;
+
+    private Profile profile;
+    private ProfileTracker mProfileTracker;
 
     public static ProfileFragment newInstance() {
         ProfileFragment f = new ProfileFragment();
@@ -48,6 +57,20 @@ public class ProfileFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         profile = Profile.getCurrentProfile();
+
+        if (profile == null){
+            mProfileTracker = new ProfileTracker() {
+                @Override
+                protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+                    mProfileTracker.stopTracking();
+                    Glide.with(ProfileFragment.this)
+                            .load(currentProfile.getProfilePictureUri(100, 100))
+                            .into(imgViewProfile);
+                    nameTextView.setText(currentProfile.getFirstName() + " " + currentProfile.getLastName());
+
+                }
+            };
+        }
     }
 
     @Override
@@ -55,9 +78,13 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
 
-        Glide.with(this)
-                .load(profile.getProfilePictureUri(100, 100))
-                .into(imgViewProfile);
+        if (Profile.getCurrentProfile() != null)
+        {
+            Glide.with(this)
+                    .load(profile.getProfilePictureUri(100, 100))
+                    .into(imgViewProfile);
+            nameTextView.setText(profile.getFirstName() + " " + profile.getLastName());
+        }
 
         //TODO Initialize Profile Data
 
