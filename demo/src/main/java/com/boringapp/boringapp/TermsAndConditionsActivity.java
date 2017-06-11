@@ -39,8 +39,10 @@ public class TermsAndConditionsActivity extends AppCompatActivity {
                 editor.putBoolean("isFirstTime", false);
                 editor.apply();
 
-                Intent intent = new Intent(TermsAndConditionsActivity.this, InviteActivity.class);
+                Intent intent = new Intent(TermsAndConditionsActivity.this, MainActivity.class);
+                intent.putExtra("isFirstTime", true);
                 startActivity(intent);
+                finish();
             }
         });
 

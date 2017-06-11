@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                 // App code
                 Intent intent = new Intent(LoginActivity.this, TermsAndConditionsActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override

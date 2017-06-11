@@ -16,18 +16,25 @@
 
 package com.boringapp.boringapp;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.boringapp.boringapp.adapters.ActUserAdapter;
 import com.boringapp.boringapp.data.ActUser;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.model.AppInviteContent;
+import com.facebook.share.widget.AppInviteDialog;
 
 import java.util.ArrayList;
 
@@ -46,10 +53,15 @@ public class FriendsFragment extends Fragment {
     @BindView(R.id.btnFriendsActive)
     Button btnFriendsActive;
 
+    @BindView(R.id.button3)
+    Button btnInviteFriend;
+
     @BindView(R.id.listView)
     ListView listView;
 
     ActUserAdapter mAdapter;
+
+    CallbackManager callbackManager;
 
     private ArrayList<ActUser> leaderboard;
     private ArrayList<ActUser> activeUsers;
@@ -58,6 +70,8 @@ public class FriendsFragment extends Fragment {
         FriendsFragment f = new FriendsFragment();
         return f;
     }
+
+    ViewPager pager;
 
     // Store instance variables based on arguments passed
     @Override
@@ -136,6 +150,8 @@ public class FriendsFragment extends Fragment {
         ButterKnife.bind(this, view);
         //TODO Initialize Friend Data
 
+        pager = (ViewPager) container;
+
         mAdapter = new ActUserAdapter(getContext(), new ArrayList<ActUser>());
         mAdapter.addAll(leaderboard);
         listView.setAdapter(mAdapter);
@@ -156,7 +172,52 @@ public class FriendsFragment extends Fragment {
             }
         });
 
+        callbackManager = CallbackManager.Factory.create();
+
+        final FriendsFragment _self = this;
+        btnInviteFriend.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Do something in response to button click
+                String appLinkUrl, previewImageUrl;
+
+                appLinkUrl = "https://fb.me/1957657991151520";
+                previewImageUrl = "https://www.mydomain.com/my_invite_image.jpg";
+
+                if (AppInviteDialog.canShow()) {
+                    AppInviteContent content = new AppInviteContent.Builder()
+                            .setApplinkUrl(appLinkUrl)
+                            .setPreviewImageUrl(previewImageUrl)
+                            .build();
+                    AppInviteDialog appInviteDialog = new AppInviteDialog(_self);
+                    appInviteDialog.registerCallback(callbackManager, new FacebookCallback<AppInviteDialog.Result>(){
+                        @Override
+                        public void onSuccess(AppInviteDialog.Result result) {
+                            Toast.makeText(getContext(), "Sent Invite your friends", Toast.LENGTH_SHORT).show();
+                            pager.setCurrentItem(0);
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+
+                        @Override
+                        public void onError(FacebookException error) {
+
+                        }
+                    });
+                    appInviteDialog.show(content);
+                }
+
+            }
+        });
+
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 }
