@@ -199,6 +199,26 @@
             android:textColor="@android:color/white"
             android:textSize="32sp"/>
 
+        <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+            android:id="@+id/carbon_score_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_below="@+id/textView13"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            app:rcProgress="50"
+            app:rcSecondaryProgress="60"
+            app:rcMax="100"
+            app:rcRadius="10dp"
+            app:rcBackgroundPadding="2dp"
+            app:rcReverse="false"
+            app:rcProgressColor="@color/score_green"
+            app:rcSecondaryProgressColor="@color/score_green"
+            app:rcBackgroundColor="@color/custom_gray" />
+
         <TextView
             android:id="@+id/txt_product_name"
             android:layout_width="wrap_content"
@@ -219,13 +239,14 @@
             android:textColor="@android:color/white"/>
 
         <com.sackcentury.shinebuttonlib.ShineButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:id="@+id/shineButton"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:layout_centerInParent="true"
-            android:layout_below="@+id/textView13"
+            android:layout_below="@+id/carbon_score_progress_bar"
+            android:layout_marginTop="20dp"
             android:src="@android:color/darker_gray"
-            android:id="@+id/po_image1"
-            app:btn_color="@android:color/darker_gray"
+            app:btn_color="@color/score_green"
             app:btn_fill_color="#FF6666"
             app:allow_random_color="false"
             app:enable_flashing="false"
@@ -237,7 +258,7 @@
             app:shine_distance_multiple="1.5"
             app:small_shine_color="#CC9999"
             app:shine_count="8"
-            app:siShape="@raw/like"/>
+            app:siShape="@drawable/icon_positive"/>
 
     </RelativeLayout>
 

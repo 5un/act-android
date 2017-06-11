@@ -63,6 +63,7 @@ import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
 import com.ogaclejapan.arclayout.Arc;
 import com.ogaclejapan.arclayout.ArcLayout;
+import com.sackcentury.shinebuttonlib.ShineButton;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -146,6 +147,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @BindView(R.id.btn_friends)
     ImageButton mBtnFriends;
+
+    @BindView(R.id.shineButton)
+    ShineButton mBtnShine;
 
     private ArcLayout mMenuLayout;
     private ImageButton mBtnTakePhoto;
@@ -585,6 +589,7 @@ public class MainActivity extends AppCompatActivity implements
                     mLayoutCarbonScoreOverlay.setVisibility(View.VISIBLE);
                     mTxtProductName.setText("" + result.description + ", " + result.brand);
                     mTxtProductScore.setText("" + result.carbonScore);
+                    mBtnShine.performClick();
                 } else {
                     Toast.makeText(MainActivity.this,
                             "Cannot detect product, please try again.",
