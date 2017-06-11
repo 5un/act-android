@@ -186,6 +186,10 @@ public class MainActivity extends AppCompatActivity implements
                     Intent intent2 = new Intent(MainActivity.this, PollingTopicsActivity.class);
                     startActivity(intent2);
                     break;
+                case R.id.btn_history:
+                    Intent intent3 = new Intent(MainActivity.this, HistoryActivity.class);
+                    startActivity(intent3);
+                    break;
             }
         }
     };
