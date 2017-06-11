@@ -288,6 +288,14 @@ public class MainActivity extends AppCompatActivity implements
                 mLayoutCarbonScoreOverlay.setVisibility(View.GONE);
             }
         });
+
+        Intent intent = getIntent();
+        Boolean isFirstTime = intent.getBooleanExtra("isFirstTime", false);
+
+        if (isFirstTime)
+        {
+            mPager.setCurrentItem(2);
+        }
     }
 
     @Override
@@ -702,5 +710,4 @@ public class MainActivity extends AppCompatActivity implements
 
         return anim;
     }
-
 }
