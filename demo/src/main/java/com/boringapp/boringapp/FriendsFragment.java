@@ -18,6 +18,7 @@ package com.boringapp.boringapp;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,7 +136,8 @@ public class FriendsFragment extends Fragment {
         ButterKnife.bind(this, view);
         //TODO Initialize Friend Data
 
-        mAdapter = new ActUserAdapter(getContext(), leaderboard);
+        mAdapter = new ActUserAdapter(getContext(), new ArrayList<ActUser>());
+        mAdapter.addAll(leaderboard);
         listView.setAdapter(mAdapter);
 
         btnFriendsTop.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +145,6 @@ public class FriendsFragment extends Fragment {
             public void onClick(View view) {
                 mAdapter.clear();
                 mAdapter.addAll(leaderboard);
-
             }
         });
 
