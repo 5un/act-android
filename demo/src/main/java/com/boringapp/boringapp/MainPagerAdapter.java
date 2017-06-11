@@ -30,7 +30,7 @@ import android.view.ViewGroup;
  */
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
-    private static int NUM_ITEMS = 3;
+    private static int NUM_ITEMS = 4;
 
     public MainPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
@@ -53,6 +53,8 @@ public class MainPagerAdapter extends FragmentPagerAdapter {
                 return BlankFragment.newInstance();
             case 2: // Fragment # 1 - This will show SecondFragment
                 return FriendsFragment.newInstance();
+            case 3: // Fragment # 3 - This will show SettingFragment
+                return SettingFragment.newInstance();
             default:
                 return null;
         }
