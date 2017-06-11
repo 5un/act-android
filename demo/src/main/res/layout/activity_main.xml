@@ -239,7 +239,7 @@
             android:textColor="@android:color/white"/>
 
         <com.sackcentury.shinebuttonlib.ShineButton
-            android:id="@+id/shineButton"
+            android:id="@+id/shineButtonPositive"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_centerInParent="true"
@@ -247,7 +247,51 @@
             android:layout_marginTop="20dp"
             android:src="@android:color/darker_gray"
             app:btn_color="@color/score_green"
-            app:btn_fill_color="#FF6666"
+            app:btn_fill_color="@color/score_green"
+            app:allow_random_color="false"
+            app:enable_flashing="false"
+            app:big_shine_color="#66FF66"
+            app:click_animation_duration="200"
+            app:shine_animation_duration="1500"
+            app:shine_turn_angle="10"
+            app:small_shine_offset_angle="20"
+            app:shine_distance_multiple="1.5"
+            app:small_shine_color="#99CC99"
+            app:shine_count="8"
+            app:siShape="@drawable/icon_positive"/>
+
+        <com.sackcentury.shinebuttonlib.ShineButton
+            android:id="@+id/shineButtonNeutral"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/carbon_score_progress_bar"
+            android:layout_marginTop="20dp"
+            android:src="@android:color/darker_gray"
+            app:btn_color="@color/score_yellow"
+            app:btn_fill_color="@color/score_yellow"
+            app:allow_random_color="false"
+            app:enable_flashing="false"
+            app:big_shine_color="#FFFF66"
+            app:click_animation_duration="200"
+            app:shine_animation_duration="1500"
+            app:shine_turn_angle="10"
+            app:small_shine_offset_angle="20"
+            app:shine_distance_multiple="1.5"
+            app:small_shine_color="#CCCC99"
+            app:shine_count="8"
+            app:siShape="@drawable/icon_neutral"/>
+
+        <com.sackcentury.shinebuttonlib.ShineButton
+            android:id="@+id/shineButtonNegative"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/carbon_score_progress_bar"
+            android:layout_marginTop="20dp"
+            android:src="@android:color/darker_gray"
+            app:btn_color="@color/score_red"
+            app:btn_fill_color="@color/score_red"
             app:allow_random_color="false"
             app:enable_flashing="false"
             app:big_shine_color="#FF6666"
@@ -258,7 +302,21 @@
             app:shine_distance_multiple="1.5"
             app:small_shine_color="#CC9999"
             app:shine_count="8"
-            app:siShape="@drawable/icon_positive"/>
+            app:siShape="@drawable/icon_negative"/>
+
+        <TextView
+            android:id="@+id/txt_act_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/carbon_score_progress_bar"
+            android:layout_alignLeft="@+id/carbon_score_progress_bar"
+            android:layout_alignRight="@+id/carbon_score_progress_bar"
+            android:layout_alignStart="@+id/carbon_score_progress_bar"
+            android:layout_below="@+id/carbon_score_progress_bar"
+            android:layout_marginTop="122dp"
+            android:gravity="center_horizontal"
+            android:text="You've earned 5 ACT. points!"
+            android:textColor="@android:color/white"/>
 
     </RelativeLayout>
 

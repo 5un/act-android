@@ -57,6 +57,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.boringapp.boringapp.data.RecognitionResult;
 import com.bumptech.glide.Glide;
 import com.google.android.cameraview.AspectRatio;
@@ -130,35 +131,25 @@ public class MainActivity extends AppCompatActivity implements
     private ViewPager mPager;
     private MainPagerAdapter mPagerAdapter;
 
-    @BindView(R.id.btn_settings)
-    ImageButton mBtnSettings;
-
-    @BindView(R.id.btn_redeem)
-    ImageButton mBtnRedeem;
-
-    @BindView(R.id.btn_vote)
-    ImageButton mBtnVote;
-
-    @BindView(R.id.btn_scan)
-    ImageButton mBtnScan;
-
-    @BindView(R.id.btn_history)
-    ImageButton mBtnHistory;
-
-    @BindView(R.id.btn_friends)
-    ImageButton mBtnFriends;
-
-    @BindView(R.id.shineButton)
-    ShineButton mBtnShine;
+    @BindView(R.id.btn_settings) ImageButton mBtnSettings;
+    @BindView(R.id.btn_redeem) ImageButton mBtnRedeem;
+    @BindView(R.id.btn_vote) ImageButton mBtnVote;
+    @BindView(R.id.btn_scan) ImageButton mBtnScan;
+    @BindView(R.id.btn_history) ImageButton mBtnHistory;
+    @BindView(R.id.btn_friends) ImageButton mBtnFriends;
+    @BindView(R.id.shineButtonPositive) ShineButton mBtnShinePositive;
+    @BindView(R.id.shineButtonNeutral) ShineButton mBtnShineNeutral;
+    @BindView(R.id.shineButtonNegative) ShineButton mBtnShineNegative;
+    @BindView(R.id.txt_product_name) TextView mTxtProductName;
+    @BindView(R.id.txt_product_score) TextView mTxtProductScore;
+    @BindView(R.id.txt_act_point) TextView mTxtACTPoints;
+    @BindView(R.id.carbon_score_progress_bar) RoundCornerProgressBar mCarbonScoreProgressBar;
 
     private ArcLayout mMenuLayout;
     private ImageButton mBtnTakePhoto;
-    private Fragment mCarbonScoreFragment;
     private ViewRevealAnimator mViewRevealAnimator;
-    private RelativeLayout mLayoutCarbonScoreOverlay;
-    private TextView mTxtProductName;
-    private TextView mTxtProductScore;
 
+    @BindView(R.id.layout_carbon_score_overlay) RelativeLayout mLayoutCarbonScoreOverlay;
 
     private Handler mBackgroundHandler;
 
@@ -268,12 +259,7 @@ public class MainActivity extends AppCompatActivity implements
         mViewRevealAnimator = (ViewRevealAnimator) findViewById(R.id.animator);
         mViewRevealAnimator.setVisibility(View.GONE);
 
-        mLayoutCarbonScoreOverlay = (RelativeLayout) findViewById(R.id.layout_carbon_score_overlay);
         mLayoutCarbonScoreOverlay.setVisibility(View.GONE);
-
-        mTxtProductName = (TextView) findViewById(R.id.txt_product_name);
-        mTxtProductScore = (TextView) findViewById(R.id.txt_product_score);
-
 
         // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         // setSupportActionBar(toolbar);
@@ -586,10 +572,37 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             protected void onPostExecute(RecognitionResult result) {
                 if(result != null) {
+                    mBtnShinePositive.setVisibility(View.GONE);
+                    mBtnShineNeutral.setVisibility(View.GONE);
+                    mBtnShineNegative.setVisibility(View.GONE);
+                    //TODO customize reaction
+                    int color;
+                    if(result.carbonScore > 60) {
+                        color = getResources().getColor(R.color.score_red);
+                        mBtnShineNegative.setVisibility(View.VISIBLE);
+                        mBtnShineNegative.performClick();
+                        mBtnShineNegative.performClick();
+                    } else if(result.carbonScore > 40) {
+                        color = getResources().getColor(R.color.score_yellow);
+                        mBtnShineNeutral.setVisibility(View.VISIBLE);
+                        mBtnShineNeutral.performClick();
+                        mBtnShineNeutral.performClick();
+                    } else {
+                        color = getResources().getColor(R.color.score_green);
+                        mBtnShinePositive.setVisibility(View.VISIBLE);
+                        mBtnShinePositive.performClick();
+                        mBtnShinePositive.performClick();
+                    }
+                    mTxtProductScore.setTextColor(color);
+                    mCarbonScoreProgressBar.setProgressColor(color);
+                    mCarbonScoreProgressBar.setSecondaryProgressColor(color);
+                    mCarbonScoreProgressBar.setProgress(result.carbonScore);
+                    mCarbonScoreProgressBar.setSecondaryProgress(result.carbonScore);
+
                     mLayoutCarbonScoreOverlay.setVisibility(View.VISIBLE);
                     mTxtProductName.setText("" + result.description + ", " + result.brand);
                     mTxtProductScore.setText("" + result.carbonScore);
-                    mBtnShine.performClick();
+                    mTxtACTPoints.setText("You've gained " + result.actPoint + " ACT points!!");
                 } else {
                     Toast.makeText(MainActivity.this,
                             "Cannot detect product, please try again.",
