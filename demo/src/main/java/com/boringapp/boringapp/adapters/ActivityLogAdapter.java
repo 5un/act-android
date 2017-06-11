@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.boringapp.boringapp.R;
 import com.boringapp.boringapp.data.ActivityLog;
-import com.boringapp.boringapp.data.PollingTopic;
 
 import java.util.ArrayList;
 

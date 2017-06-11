@@ -21,7 +21,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.boringapp.boringapp.R;
 import com.boringapp.boringapp.data.PollingTopic;
@@ -42,7 +45,7 @@ public class PollingTopicAdapter extends ArrayAdapter<PollingTopic> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
-        PollingTopic topic = getItem(position);
+        final PollingTopic topic = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_vote, parent, false);
@@ -52,6 +55,14 @@ public class PollingTopicAdapter extends ArrayAdapter<PollingTopic> {
         TextView txtVotePoint = (TextView) convertView.findViewById(R.id.txtPointsFromTopicVote);
         TextView txtSharePoint = (TextView) convertView.findViewById(R.id.txtPointsFromSharing);
         TextView txtNumVotes = (TextView) convertView.findViewById(R.id.txtNumVotes);
+        ImageButton btnVoteTopic = (ImageButton) convertView.findViewById(R.id.btnVoteTopic);
+
+        btnVoteTopic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "You got " + topic.votePoint + " " + (topic.votePoint > 1 ? "pts": "pt"), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         txtTopic.setText("" + topic.topic);
         txtVotePoint.setText("" + topic.votePoint);
