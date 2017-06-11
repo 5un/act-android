@@ -35,7 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -52,11 +52,12 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".TermsAndConditionsActivity"></activity>
-        <activity android:name=".RewardsMenuActivity"></activity>
-        <activity android:name=".RewardsListActivity"></activity>
-        <activity android:name=".InviteActivity"></activity>
-        <activity android:name=".PollingTopicsActivity"></activity>
+        <activity android:name=".TermsAndConditionsActivity" />
+        <activity android:name=".RewardsMenuActivity" />
+        <activity android:name=".RewardsListActivity" />
+        <activity android:name=".InviteActivity" />
+        <activity android:name=".PollingTopicsActivity" />
+        <activity android:name=".HistoryActivity"></activity>
     </application>
 
 </manifest>
