@@ -52,12 +52,14 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
+
         <activity android:name=".TermsAndConditionsActivity" />
         <activity android:name=".RewardsMenuActivity" />
         <activity android:name=".RewardsListActivity" />
         <activity android:name=".InviteActivity" />
         <activity android:name=".PollingTopicsActivity" />
         <activity android:name=".HistoryActivity"></activity>
+        <activity android:name=".RedeemQRCodeActivity"></activity>
     </application>
 
 </manifest>

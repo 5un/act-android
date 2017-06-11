@@ -16,26 +16,22 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/black"
-              android:orientation="vertical">
+              android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView9"
+        android:id="@+id/txtRedeem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
         android:padding="20dp"
-        android:text="Redeem"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textColor="@android:color/white"/>
+        android:text="Redeem Code"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"/>
 
-    <ListView
-        android:id="@+id/listView"
+    <ImageView
+        android:id="@+id/imageView3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="40dp"
-        android:layout_marginTop="10dp"
-        android:background="@android:color/white"/>
+        android:layout_height="wrap_content"
+        android:src="@drawable/qr_code"/>
 </LinearLayout>
