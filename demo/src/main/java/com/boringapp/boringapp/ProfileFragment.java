@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.facebook.Profile;
 
 /**
  * Created by Sun on 6/10/2017 AD.
@@ -36,6 +37,7 @@ public class ProfileFragment extends Fragment {
 
     @BindView(R.id.imageViewProfile)
     ImageView imgViewProfile;
+    Profile profile;
 
     public static ProfileFragment newInstance() {
         ProfileFragment f = new ProfileFragment();
@@ -45,6 +47,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        profile = Profile.getCurrentProfile();
     }
 
     @Override
@@ -52,10 +55,8 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
         ButterKnife.bind(this, view);
 
-        // https://graph.facebook.com/100000532459075/picture
-
         Glide.with(this)
-                .load("https://graph.facebook.com/100000532459075/picture")
+                .load(profile.getProfilePictureUri(100, 100))
                 .into(imgViewProfile);
 
         //TODO Initialize Profile Data
