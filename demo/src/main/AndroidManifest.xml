@@ -57,6 +57,7 @@
         <activity android:name=".RewardsListActivity"></activity>
         <activity android:name=".InviteActivity"></activity>
         <activity android:name=".PollingTopicsActivity"></activity>
+        <activity android:name=".RedeemQRCodeActivity"></activity>
     </application>
 
 </manifest>

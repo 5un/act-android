@@ -17,7 +17,10 @@
 package com.boringapp.boringapp;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.boringapp.boringapp.adapters.RewardAdapter;
@@ -79,6 +82,13 @@ public class RewardsListActivity extends Activity {
         mAdapter = new RewardAdapter(this, rewards);
         mListView.setAdapter(mAdapter);
 
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(RewardsListActivity.this, RedeemQRCodeActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
