@@ -277,6 +277,23 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onBackPressed() {
+        if (View.VISIBLE == mMenuLayout.getVisibility())
+        {
+            this.hideMenu();
+        }
+
+        if (mPager.getCurrentItem() == 0)
+        {
+            super.onBackPressed();
+        }
+        else
+        {
+            mPager.setCurrentItem(0);
+        }
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)

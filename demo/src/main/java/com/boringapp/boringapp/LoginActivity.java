@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
         {
             Intent intent = new Intent(LoginActivity.this, TermsAndConditionsActivity.class);
             startActivity(intent);
+            finish();
         }
 
         callbackManager = CallbackManager.Factory.create();

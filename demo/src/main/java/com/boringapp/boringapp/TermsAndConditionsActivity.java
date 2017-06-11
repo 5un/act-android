@@ -29,6 +29,7 @@ public class TermsAndConditionsActivity extends AppCompatActivity {
         {
             Intent intent = new Intent(TermsAndConditionsActivity.this, MainActivity.class);
             startActivity(intent);
+            finish();
         }
 
         btnAcceptTerms.setOnClickListener(new View.OnClickListener() {
