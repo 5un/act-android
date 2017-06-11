@@ -17,12 +17,16 @@
 package com.boringapp.boringapp;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.VideoView;
 
 import butterknife.ButterKnife;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -44,6 +48,12 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        if (accessToken != null)
+        {
+            Intent intent = new Intent(LoginActivity.this, TermsAndConditionsActivity.class);
+            startActivity(intent);
+        }
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -68,6 +78,18 @@ public class LoginActivity extends AppCompatActivity {
             public void onError(FacebookException exception) {
                 // App code
                 Log.i("Facebook Login", "Error");
+            }
+        });
+
+        VideoView videoview = (VideoView) findViewById(R.id.videoView);
+        Uri uri = Uri.parse("android.resource://"+getPackageName()+"/"+R.raw.video);
+        videoview.setVideoURI(uri);
+        videoview.start();
+
+        videoview.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.setLooping(true);
             }
         });
     }
